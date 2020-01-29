@@ -1,4 +1,5 @@
 # mh-test
+
 test for MH
 
-Meter -> broker -> PV Generator -> output file
+Meter -> broker -> PV Simulator -> output file
