@@ -1,7 +1,7 @@
 import logging
 import pika
-
-from .api import Broker
+import pika.exceptions as exc
+from .api import BrokerConnector, PublishError
 
 
 logging.basicConfig()
@@ -10,9 +10,9 @@ logging.basicConfig()
 # the nicer/modern way would be
 # @implements(Broker)
 # class Rabbit:
-class Rabbit(Broker):
+class Rabbit(BrokerConnector):
     """
-    The RabbitMQ concrete implementation of a broker
+    The RabbitMQ concrete implementation of a broker connector
     """
 
     def __init__(self,
@@ -20,28 +20,31 @@ class Rabbit(Broker):
             queue: str = ''):
         """
         url: where to connect, i.e. where the broker is
-        queue: the topic queue, one only
+        queue: the topic queue, one only for now
         """
         # self.url = url
         self.queue = queue
-        self.params = pika.URLParameters(url)
-        self.params.socket_timeout = 5
-       
-    def __enter__(self):
-        self.connection = pika.BlockingConnection(self.params) # Connect to CloudAMQP
+        params = pika.URLParameters(url)
+        params.socket_timeout = 5
+        self.connection = pika.BlockingConnection(params) # connect
         self.channel = self.connection.channel() # start a channel
-        self.channel.queue_declare(queue=self.queue) # Declare a queue
-        return self
+        self.channel.queue_declare(queue=self.queue) # declare the queue
     
-    def __exit__(self, exc_type, exc_value, traceback):
+    def close(self):
         self.connection.close()
 
     def publish(self, data: str):
-        self.channel.basic_publish(
-            exchange='',
-            routing_key=self.queue,
-            body='User information'
-        )
+        try:
+            self.channel.basic_publish(
+                exchange='',
+                routing_key=self.queue,
+                body=data
+            )
+        except (
+            exc.UnroutableError,
+            exc.NackError
+            ) as err:
+            raise PublishError(err)
 
     def subscribe(self):
         pass

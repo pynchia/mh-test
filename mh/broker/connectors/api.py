@@ -7,19 +7,14 @@ independent of kind (e.g. RabbitMQ, MQTT, etc)
 from abc import ABC, abstractmethod
 
 
-class Broker(ABC):
-    """
-    Basic interface to a broker.
-    Each broker instance support one queue only
-    """
+class PublishError(Exception):
+    pass
 
-    @abstractmethod
-    def __enter__(self) -> None:
-        pass
 
-    @abstractmethod
-    def __exit__(self, exc_type, exc_value, traceback) -> bool:
-        pass
+class BrokerConnector(ABC):
+    """
+    Basic interface to a broker every connector must implement
+    """
 
     @abstractmethod
     def publish(self, data: str) -> None:
@@ -44,10 +39,10 @@ class Broker(ABC):
 
 
 # The nicer/modern way would be
-# from typing import Protocol, ContextManager, runtime_checkable, Dict, List
+# from typing import Protocol, runtime_checkable
 #
 # @runtime_checkable
-# class Broker(ContextManager):
+# class Broker(Protocol):
 #     """
 #     Basic interface to a broker.
 #     Each broker instance support one queue only
