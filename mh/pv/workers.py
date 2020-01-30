@@ -2,6 +2,7 @@
 The functionality to process the incoming messages
 """
 
+import array
 import logging
 from datetime import datetime
 from typing import NamedTuple
@@ -16,11 +17,24 @@ SECS_IN_A_DAY = 86400
 NUM_SAMPLES = 4320  # it can be smaller, e.g. 432, the curve would still be good
 PV_SCALE = SECS_IN_A_DAY // NUM_SAMPLES
 
-MU = 3
-VARIANCE = 1
-SIGMA = math.sqrt(VARIANCE)
-PV_DAY_TIME_SAMPLES = np.linspace(0, MU + 3*SIGMA, NUM_SAMPLES)  # secs in a day, scaled down
-PV_DAY_SIGNAL = (stats.norm.pdf(PV_DAY_TIME_SAMPLES, MU+0.5, SIGMA-0.5)*4125).astype(int) # 3.3KW is the max
+# Here is how I created the file with the PV power samples
+#
+# MU = 3
+# VARIANCE = 1
+# SIGMA = math.sqrt(VARIANCE)
+# PV_DAY_TIME_SAMPLES = np.linspace(0, MU + 3*SIGMA, NUM_SAMPLES)  # secs in a day, scaled down
+# PV_DAY_POWER = (stats.norm.pdf(PV_DAY_TIME_SAMPLES, MU+0.5, SIGMA-0.5)*4125).astype(int) # 3.3KW is the max
+# np.savetxt('PV_DAY_POWER.txt', PV_DAY_POWER, fmt='%u')
+
+
+PV_DAY_POWER_FILENAME = 'PV_DAY_POWER.txt'
+
+def load_PV_DAY_POWER(filename):
+    with open(filename) as f:
+        for val in f:
+            yield int(val)
+
+PV_DAY_POWER = array.array('L', load_PV_DAY_POWER(PV_DAY_POWER_FILENAME))
 
 
 def measure_pv_power():
@@ -33,7 +47,7 @@ def measure_pv_power():
         (timestamp - timestamp.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
     )
 
-    pv_power = PV_DAY_SIGNAL[seconds_since_midnight // PV_SCALE] 
+    pv_power = PV_DAY_POWER[seconds_since_midnight // PV_SCALE] 
     return (timestamp, pv_power)
 
 class Processor:
