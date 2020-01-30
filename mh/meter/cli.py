@@ -23,7 +23,6 @@ DEFAULT_QUEUE = 'meter'
 def cli(url, queue):
     main(url, queue)
 
-# 'amqp://woabdkju:OYy-a8GI_1Clv2QIdeu26b92FYj2uTeO@hawk.rmq.cloudamqp.com/woabdkju'
 
 if __name__ == '__main__':
     cli()

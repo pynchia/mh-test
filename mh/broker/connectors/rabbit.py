@@ -46,8 +46,13 @@ class Rabbit(BrokerConnector):
             ) as err:
             raise PublishError(err)
 
-    def subscribe(self):
-        pass
+    def subscribe_and_consume(self, callback):
+        self.callback = callback
+        self.channel.basic_consume(
+            self.queue,
+            self._receive_msg,
+            auto_ack=True)
+        self.channel.start_consuming()
 
-    def read(self):
-        pass
+    def _receive_msg(self, ch, method, properties, body):
+        self.callback(body)

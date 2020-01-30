@@ -1,3 +1,4 @@
+from typing import Callable
 
 
 class Broker:
@@ -21,14 +22,9 @@ class Broker:
         """
         self.connector.publish(data)
 
-    def subscribe(self) -> None:
+    def subscribe_and_process(self, processor: Callable) -> None:
         """
-        Subscribe to the queue passed to constructor
+        Subscribe to the queue.
+        The callback will be called upon each msg received
         """
-        pass
-
-    def read(self) -> str:
-        """
-        Read data from the topic/queue
-        """
-        pass
+        self.connector.subscribe_and_consume(processor)

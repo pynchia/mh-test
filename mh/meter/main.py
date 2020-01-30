@@ -1,5 +1,5 @@
 """
-The main module of the application
+The main module of the Meter application
 """
 
 from time import sleep
@@ -9,7 +9,6 @@ from .util import generate_value
 
 
 def main(url: str, queue: str):
-    print(f"url = {url}")
     rabbit_client = Rabbit(url, queue)
     with Broker(rabbit_client) as broker:
         for value in generate_value():

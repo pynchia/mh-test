@@ -24,18 +24,13 @@ class BrokerConnector(ABC):
         ...
 
     @abstractmethod
-    def subscribe(self) -> None:
+    def subscribe_and_consume(self, callback) -> None:
         """
         Subscribe to the topic/queue passed to constructor
+        callback: the worker to which each incoming msg must be passed
         """
         ...
 
-    @abstractmethod
-    def read(self) -> str:
-        """
-        Read data from the topic/queue
-        """
-        ...
 
 
 # The nicer/modern way would be
