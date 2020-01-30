@@ -4,7 +4,7 @@ import pika.exceptions as exc
 from .api import BrokerConnector, PublishError
 
 
-logging.basicConfig()
+log = logging.getLogger()
 
 
 # the nicer/modern way would be
@@ -33,25 +33,28 @@ class Rabbit(BrokerConnector):
     def close(self):
         self.connection.close()
 
-    def publish(self, data: str):
+    def publish(self, msg: str):
         try:
             self.channel.basic_publish(
                 exchange='',
                 routing_key=self.queue,
-                body=data
+                body=msg
             )
+            log.info(msg)
         except (
             exc.UnroutableError,
             exc.NackError
             ) as err:
             raise PublishError(err)
 
-    def subscribe_and_consume(self, callback):
+    def subscribe(self, callback):
         self.callback = callback
         self.channel.basic_consume(
             self.queue,
             self._receive_msg,
             auto_ack=True)
+
+    def consume(self):
         self.channel.start_consuming()
 
     def _receive_msg(self, ch, method, properties, body):

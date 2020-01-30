@@ -17,20 +17,26 @@ class BrokerConnector(ABC):
     """
 
     @abstractmethod
-    def publish(self, data: str) -> None:
+    def publish(self, msg: str) -> None:
         """
-        Publish data to the topic/queue
+        Publish msg to the topic/queue
         """
         ...
 
     @abstractmethod
-    def subscribe_and_consume(self, callback) -> None:
+    def subscribe(self, callback) -> None:
         """
         Subscribe to the topic/queue passed to constructor
         callback: the worker to which each incoming msg must be passed
         """
         ...
 
+    @abstractmethod
+    def consume(self) -> None:
+        """
+        Consume msgs from the queue, endlessly
+        """
+        ...
 
 
 # The nicer/modern way would be

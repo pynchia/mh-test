@@ -1,5 +1,5 @@
 """
-The command line interface to the user
+The command line interface of the PV application
 """
 
 import click
@@ -8,22 +8,30 @@ import logging
 from mh.pv.main import main
 
 
-log = logging.getLogger(__name__)
-
-
 DEFAULT_QUEUE = 'meter'
+
+logging.basicConfig()
+log = logging.getLogger()
+log.setLevel(logging.ERROR)
 
 @click.command()
 @click.option(
-    "--url", help="Full address and credentials to the broker"
+    "--outputfile", "-o", required=True, help="The file where the output data must be appended"
 )
 @click.option(
-    "--queue", default=DEFAULT_QUEUE, help="Name of the queue"
+    "--url", "-u", required=True, help="Full address and credentials to the broker"
 )
-def cli(url, queue):
-    main(url, queue)
+@click.option(
+    "--queue", "-q", default=DEFAULT_QUEUE, help="Name of the queue"
+)
+@click.option(
+    "--verbose", "-v", is_flag=True, default=False, help="Log at info level"
+)
+def cli(outputfile, url, queue, verbose):
+    if verbose:
+        log.setLevel(logging.INFO)
+    main(outputfile, url, queue)
 
-# 'amqp://woabdkju:OYy-a8GI_1Clv2QIdeu26b92FYj2uTeO@hawk.rmq.cloudamqp.com/woabdkju'
 
 if __name__ == '__main__':
     cli()

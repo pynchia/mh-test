@@ -1,5 +1,5 @@
 """
-The command line interface to the user
+The command line interface of the Meter application
 """
 
 import click
@@ -8,19 +8,25 @@ import logging
 from mh.meter.main import main
 
 
-log = logging.getLogger(__name__)
-
-
 DEFAULT_QUEUE = 'meter'
+
+logging.basicConfig()
+log = logging.getLogger()
+log.setLevel(logging.ERROR)
 
 @click.command()
 @click.option(
-    "--url", help="Full address and credentials to the broker"
+    "--url", "-u", required=True, help="Full address and credentials to the broker"
 )
 @click.option(
-    "--queue", default=DEFAULT_QUEUE, help="Name of the queue"
+    "--queue", "-q", default=DEFAULT_QUEUE, help="Name of the queue"
 )
-def cli(url, queue):
+@click.option(
+    "--verbose", "-v", is_flag=True, default=False, help="Log at debug level"
+)
+def cli(url, queue, verbose):
+    if verbose:
+        log.setLevel(logging.DEBUG)
     main(url, queue)
 
 

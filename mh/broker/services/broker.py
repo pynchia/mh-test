@@ -1,4 +1,8 @@
+import logging
 from typing import Callable
+
+
+log = logging.getLogger()
 
 
 class Broker:
@@ -27,4 +31,5 @@ class Broker:
         Subscribe to the queue.
         The callback will be called upon each msg received
         """
-        self.connector.subscribe_and_consume(processor)
+        self.connector.subscribe(processor)
+        self.connector.consume()
