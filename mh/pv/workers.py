@@ -6,9 +6,6 @@ import array
 import logging
 from datetime import datetime
 from typing import NamedTuple
-import math
-import numpy as np
-import scipy.stats as stats
 
 
 log = logging.getLogger()
