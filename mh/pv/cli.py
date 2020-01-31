@@ -1,5 +1,5 @@
 """
-The command line interface of the PV application
+The command line interface to the PV application
 """
 
 import click
@@ -16,7 +16,7 @@ log.setLevel(logging.ERROR)
 
 @click.command()
 @click.option(
-    "--outputfile", "-o", required=True, help="The file where the output data must be appended"
+    "--outputfile", "-o", default=None, help="The file where the output data must be appended"
 )
 @click.option(
     "--url", "-u", required=True, help="Full address and credentials to the broker"

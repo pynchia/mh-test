@@ -3,6 +3,7 @@ The functionality to process the incoming messages
 """
 
 import array
+import json
 import logging
 from datetime import datetime
 from typing import NamedTuple
@@ -34,18 +35,19 @@ def load_PV_DAY_POWER(filename):
 PV_DAY_POWER = array.array('L', load_PV_DAY_POWER(PV_DAY_POWER_FILENAME))
 
 
-def measure_pv_power():
+def measure_pv_power(when):
     """
-    Measure the current power output of the PV
-    Return: (timestamp, pv power output)
+    Measure the power output of the PV at the specified datetime
+    It assumes the PV output is the same each day
+    Return: PV power output
     """
-    timestamp = datetime.now()
     seconds_since_midnight = int(
-        (timestamp - timestamp.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
+        (when - when.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
     )
+    return PV_DAY_POWER[seconds_since_midnight // PV_SCALE] 
 
-    pv_power = PV_DAY_POWER[seconds_since_midnight // PV_SCALE] 
-    return (timestamp, pv_power)
+class MSG_DECODE_ERROR(Exception):
+    pass
 
 class Processor:
     """
@@ -55,20 +57,46 @@ class Processor:
     """
 
     def __init__(self, output_filename):
-        self.output_file = open(output_filename, "a")
+        self.output_file = output_filename and open(output_filename, "a")
 
     def __call__(self, msg):
         """
         Process the incoming msg from the meter
         """
-        timestamp, pv_power = measure_pv_power()
-        total_power = pv_power + int(msg)
-        out_str = f"{timestamp} meter={msg} pv={pv_power}, total={total_power}\n"
+        try:
+            timestamp, meter_power = self.parse_msg(msg)
+        except MSG_DECODE_ERROR as e:
+            log.error(e)
+            out_str = e
+        else:
+            pv_power = measure_pv_power(timestamp)
+            total_power = pv_power + meter_power
+            out_str = f"{timestamp} meter={meter_power} pv={pv_power}, total={total_power}\n"
+
         log.info(out_str)
-        self.output_file.write(out_str)
+        if self.output_file is not None:
+            self.output_file.write(out_str)
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback) -> bool:
-        self.output_file.close()
+        if self.output_file is not None:
+            self.output_file.close()
+
+    @staticmethod
+    def parse_msg(msg):
+        """
+        Parse the incoming message from the meter
+        Return:
+            timestamp of the message
+            power value
+        """
+        try:
+            msg_d = json.loads(msg)
+        except json.JSONDecodeError:
+            raise MSG_DECODE_ERROR(f"Malformed json message received: {msg}")
+        return (
+            datetime.strptime(msg_d['timestamp'], '%Y-%m-%d %H:%M:%S'),
+            int(msg_d['power'])
+        )

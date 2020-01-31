@@ -1,5 +1,5 @@
 """
-The command line interface of the Meter application
+The command line interface to the Meter application
 """
 
 import click
@@ -26,7 +26,7 @@ log.setLevel(logging.ERROR)
 )
 def cli(url, queue, verbose):
     if verbose:
-        log.setLevel(logging.DEBUG)
+        log.setLevel(logging.INFO)
     main(url, queue)
 
 
