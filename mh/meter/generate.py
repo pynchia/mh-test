@@ -7,7 +7,7 @@ MIN_POWER = 0
 MAX_POWER = 9000
 
 
-def generate_msgs():
+def generate_msgs(min_power=MIN_POWER, max_power=MAX_POWER):
     """
     Generate messages with random continuous values (in Watts)
     The msg format is the json:
@@ -17,7 +17,7 @@ def generate_msgs():
     }
     """
 
-    curr_value = (MAX_POWER - MIN_POWER) // 2
+    curr_value = (max_power - min_power) // 2  # start in the middle
 
     def update_value():
         """
@@ -26,10 +26,10 @@ def generate_msgs():
         nonlocal curr_value
 
         curr_value += ra.randint(-1, 1)
-        if curr_value < MIN_POWER:
-            curr_value = MIN_POWER
-        elif curr_value > MAX_POWER:
-            curr_value = MAX_POWER
+        if curr_value < min_power:
+            curr_value = min_power
+        elif curr_value > max_power:
+            curr_value = max_power
 
     while True:
         update_value()
