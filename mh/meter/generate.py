@@ -1,6 +1,6 @@
 from datetime import datetime
-import json
 import random as ra
+from mh.broker.services.message import Message
 
 
 MIN_POWER = 0
@@ -10,11 +10,11 @@ MAX_POWER = 9000
 def generate_msgs(min_power=MIN_POWER, max_power=MAX_POWER):
     """
     Generate messages with random continuous values (in Watts)
-    The msg format is the json:
-    {
-        "timestamp": timestamp,
-        "power": current power level
-    }
+    Yields: the generated messages. The msg format is the json:
+        {
+            "timestamp": timestamp,
+            "power": current power level
+        }
     """
 
     curr_value = (max_power - min_power) // 2  # start in the middle
@@ -33,8 +33,8 @@ def generate_msgs(min_power=MIN_POWER, max_power=MAX_POWER):
 
     while True:
         update_value()
-        msg = {
-            "timestamp": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "power": curr_value
-        }
-        yield json.dumps(msg)
+        message = Message(
+            timestamp=datetime.now(),
+            power=curr_value
+        )
+        yield str(message)

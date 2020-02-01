@@ -7,6 +7,7 @@ import json
 import logging
 from datetime import datetime
 from typing import NamedTuple
+from mh.broker.services.message import Message, TIMESTAMP_FORMAT
 
 
 log = logging.getLogger()
@@ -63,40 +64,25 @@ class Processor:
         """
         Process the incoming msg from the meter
         """
+        log.info(f"Received msg {msg}")
         try:
-            timestamp, meter_power = self.parse_msg(msg)
+            message = Message.parse(msg)
         except MSG_DECODE_ERROR as e:
             log.error(e)
             out_str = e
         else:
-            pv_power = measure_pv_power(timestamp)
-            total_power = pv_power + meter_power
-            out_str = f"{timestamp} meter={meter_power} pv={pv_power}, total={total_power}\n"
+            pv_power = measure_pv_power(message.timestamp)
+            total_power = pv_power + message.power
+            out_str = f"{message.timestamp} meter={message.power} pv={pv_power}, total={total_power}\n"
 
-        log.info(out_str)
-        if self.output_file is not None:
+        log.info(f"Built msg {out_str.rstrip()}")
+        if self.output_file:
             self.output_file.write(out_str)
+            log.info(f"Appended msg {out_str}")
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback) -> bool:
-        if self.output_file is not None:
+        if self.output_file:
             self.output_file.close()
-
-    @staticmethod
-    def parse_msg(msg):
-        """
-        Parse the incoming message from the meter
-        Return:
-            timestamp of the message
-            power value
-        """
-        try:
-            msg_d = json.loads(msg)
-        except json.JSONDecodeError:
-            raise MSG_DECODE_ERROR(f"Malformed json message received: {msg}")
-        return (
-            datetime.strptime(msg_d['timestamp'], '%Y-%m-%d %H:%M:%S'),
-            int(msg_d['power'])
-        )
