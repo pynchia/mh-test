@@ -1,3 +1,7 @@
+"""
+Test the integrity and the functionality of the Message
+"""
+
 from datetime import datetime
 import json
 import pytest
@@ -33,3 +37,10 @@ def test_message_parsing_fail_bad_value_types(
         Message.parse(sample_msg_str_bad_value_type_timestamp)
     with pytest.raises(MessageFormatError):
         Message.parse(sample_msg_str_bad_value_type_power)
+
+def test_message_format_as_string(sample_msg_dict, sample_msg_str):
+    """
+    Test the message converts to string correctly
+    """
+    message = Message(**sample_msg_dict)
+    assert str(message) == sample_msg_str

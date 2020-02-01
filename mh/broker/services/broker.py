@@ -20,16 +20,16 @@ class Broker:
     def __exit__(self, exc_type, exc_value, traceback) -> bool:
         self.connector.close()
 
-    def publish(self, data: str) -> None:
+    def publish(self, msg: str) -> None:
         """
         Publish data to the topic/queue
         """
-        self.connector.publish(data)
+        self.connector.publish(msg)
 
-    def subscribe_and_process(self, processor: Callable) -> None:
+    def subscribe_and_consume(self, consumer: Callable) -> None:
         """
         Subscribe to the queue.
         The callback will be called upon each msg received
         """
-        self.connector.subscribe(processor)
+        self.connector.subscribe(consumer)
         self.connector.consume()

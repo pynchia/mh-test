@@ -5,7 +5,7 @@ import pytest
 import random
 from mh.broker.services.message import Message, TIMESTAMP_FORMAT
 from mh.meter.generate import generate_msgs
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 
 def test_format_of_generated_msgs():
