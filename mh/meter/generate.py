@@ -10,11 +10,7 @@ MAX_POWER = 9000
 def generate_msgs(min_power=MIN_POWER, max_power=MAX_POWER):
     """
     Generate messages with random continuous values (in Watts)
-    Yields: the generated messages. The msg format is the json:
-        {
-            "timestamp": timestamp,
-            "power": current power level
-        }
+    Yields: the generated messages as json strings
     """
 
     curr_value = (max_power - min_power) // 2  # start in the middle

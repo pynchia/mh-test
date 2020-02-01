@@ -8,12 +8,12 @@ from mh.meter.generate import generate_msgs
 from unittest.mock import Mock, patch
 
 
-def test_format_of_messages():
+def test_format_of_generated_msgs():
     """
-    Test the generated messages respect their expected format
+    Test the generator produces good messages
     """
     for msg in it.islice(generate_msgs(), 0, 5):
-        message = Message.parse(msg)  # check the json fields have the right names
+        message = Message.parse(msg)  # checks the json keys have the right names
         assert type(message.timestamp) is datetime
         assert type(message.power) is int
 

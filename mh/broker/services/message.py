@@ -22,11 +22,21 @@ class Message(NamedTuple):
         try:
             msg_d = json.loads(msg)
             msg_d['timestamp'] = datetime.strptime(msg_d['timestamp'], TIMESTAMP_FORMAT)
-        except (json.JSONDecodeError, ValueError):
+            message = Message(**msg_d)
+            if type(message.power) is not int:
+                raise TypeError
+        except (json.JSONDecodeError, TypeError, ValueError):
             raise MessageFormatError(f"Malformed message received: {msg}")
-        return Message(**msg_d)
+        return message
 
     def __str__(self):
+        """
+        The msg is stringified as the json:
+            '{
+                "timestamp": timestamp (in the above format),
+                "power": current power level
+            }'
+        """
         msg_d = self._asdict()
         msg_d['timestamp'] = datetime.strftime(self.timestamp, TIMESTAMP_FORMAT)
         return json.dumps(msg_d)
