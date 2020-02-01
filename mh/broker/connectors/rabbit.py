@@ -17,7 +17,8 @@ class Rabbit(BrokerConnector):
 
     def __init__(self,
             url: str,
-            queue: str = ''):
+            queue: str = ''
+        ):
         """
         url: where to connect, i.e. where the broker is
         queue: the topic queue, one only for now

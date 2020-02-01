@@ -1,5 +1,7 @@
 """
 Test the integrity and the functionality of the Message
+
+PLEASE NOTE: FOR DEMO PURPOSES ONLY. NOT ALL THE SCENARIOS ARE CATERED FOR
 """
 
 from datetime import datetime

@@ -1,5 +1,7 @@
 """
-The main module of the Meter application
+Test the Broker service
+
+PLEASE NOTE: FOR DEMO PURPOSES ONLY. NOT ALL THE SCENARIOS ARE CATERED FOR
 """
 
 import logging
@@ -30,6 +32,7 @@ def test_service_publish(sample_msg_str):
 def test_service_subscribe_and_consume(sample_msg_str):
     consumer = lambda msg: None  # what to call back, stored in the connector
     message_queue = []  # the queue of messages, stored elsewhere
+
     def processor(msg):  # the actual callback, the end-user processing the msg
         # print(f"\nprocessor: {msg}")
         assert msg == sample_msg_str
