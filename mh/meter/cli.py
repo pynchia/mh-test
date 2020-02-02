@@ -4,7 +4,6 @@ The command line interface to the Meter application
 
 import click
 import logging
-
 from main import main
 
 
