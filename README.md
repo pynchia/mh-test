@@ -15,7 +15,7 @@ Set the url to the broker
 
 `export BROKER_URL='amqp://woabdkju:OYy-a8GI_1Clv2QIdeu26b92FYj2uTeO@hawk.rmq.cloudamqp.com/woabdkju'`
 
-## Configuration
+## Configuration files
 
 The PV simulator program reads the file named `PV_DAY_POWER.txt` from the current directory.
 Such file contains the daily PV power profile signal.
@@ -30,6 +30,8 @@ Go to the root directory of the project
 
 `cd /your/path/mh-test/`
 
+Note: launching the `cli.py` scripts with the `--help` parameter shows the options in detail.
+
 ### Meter
 
 Run the meter (i.e. the publisher) with
@@ -43,3 +45,9 @@ Run the PV simulator (i.e. the subscriber) with
 `python mh/pv/cli.py --outputfile myout.txt --url $BROKER_URL`
 
 where `myout.txt` is the output file of choice.
+
+## Testing
+
+Execute the automated tests with
+
+`pytest -s --cov=mh/`
