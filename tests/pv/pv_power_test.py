@@ -1,20 +1,13 @@
 from datetime import datetime
-import itertools as it
-import random
 import pytest
 from unittest.mock import patch
-from mh.broker.services.message import Message, TIMESTAMP_FORMAT
-from mh.meter.generate import generate_msgs
+from mh.pv.pv_power import PV
 
 
-def test_format_of_generated_msgs():
+def test_loading_of_PV_day_power():
     """
-    Test the generator produces good messages
+    Load the file of daily power samples and check it is ok
     """
-    for msg in it.islice(generate_msgs(), 0, 5):
-        message = Message.parse(msg)  # checks the json keys have the right names
-        assert type(message.timestamp) is datetime
-        assert type(message.power) is int
 
 @pytest.fixture
 def narrow_power_range():

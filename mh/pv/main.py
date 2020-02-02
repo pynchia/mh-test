@@ -3,9 +3,9 @@ The main module of the PV application
 """
 
 from time import sleep
+from consumer import Processor
 from mh.broker.connectors.rabbit import Rabbit
 from mh.broker.services.broker import Broker
-from consumer import Processor
 from pv_power import PV
 
 

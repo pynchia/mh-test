@@ -4,9 +4,9 @@ The main module of the Meter application
 
 import logging
 from time import sleep
+from generate import generate_msgs
 from mh.broker.connectors.rabbit import Rabbit
 from mh.broker.services.broker import Broker
-from generate import generate_msgs
 
 
 log = logging.getLogger()

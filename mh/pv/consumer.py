@@ -3,9 +3,9 @@ The functionality to process the incoming messages
 """
 
 import array
+from datetime import datetime
 import json
 import logging
-from datetime import datetime
 from mh.broker.services.message import Message, TIMESTAMP_FORMAT
 from pv_power import PV
 

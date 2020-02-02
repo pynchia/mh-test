@@ -2,8 +2,8 @@
 The functionality of the PV panel
 """
 import array
-import logging
 from datetime import datetime
+import logging
 
 
 log = logging.getLogger()

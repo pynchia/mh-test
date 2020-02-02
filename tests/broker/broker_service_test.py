@@ -4,9 +4,9 @@ Test the Broker service
 PLEASE NOTE: FOR DEMO PURPOSES ONLY. NOT ALL THE SCENARIOS ARE CATERED FOR
 """
 
+from unittest.mock import MagicMock, patch
 from mh.broker.connectors.rabbit import Rabbit
 from mh.broker.services.broker import Broker
-from unittest.mock import MagicMock, patch
 
 
 def test_service_publish(sample_msg_str):

@@ -5,7 +5,6 @@ PLEASE NOTE: FOR DEMO PURPOSES ONLY. NOT ALL THE SCENARIOS ARE CATERED FOR
 """
 
 from datetime import datetime
-import json
 import pytest
 from mh.broker.services.message import Message, TIMESTAMP_FORMAT, MessageFormatError
 
