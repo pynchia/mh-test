@@ -1,12 +1,12 @@
 import logging
 import pika
 import pika.exceptions as exc
-from .api import BrokerConnector, PublishError
+from mh.broker.connectors.api import BrokerConnector, PublishError
 
 
 log = logging.getLogger()
 
-# the nicer/modern way would be
+# the nicer/modern way (see ap.py) would be
 # @implements(Broker)
 # class Rabbit:
 class Rabbit(BrokerConnector):

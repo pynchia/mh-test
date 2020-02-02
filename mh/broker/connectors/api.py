@@ -39,40 +39,39 @@ class BrokerConnector(ABC):
         ...
 
 
-# The nicer/modern way would be
-# from typing import Protocol, runtime_checkable
+# Another way, maybe nicer/more modern way would be:
+#
+# from typing import Protocol, ContextManager, runtime_checkable
 #
 # @runtime_checkable
-# class Broker(Protocol):
+# class Broker(Protocol, ContextManager):
 #     """
 #     Basic interface to a broker.
 #     Each broker instance support one queue only
 #     """
-
 #     def publish(self, data: str) -> None:
 #         """
 #         Publish data to the topic/queue
 #         """
 #         ...
-
+#
 #     def subscribe(self) -> None:
 #         """
 #         Subscribe to the topic/queue passed to constructor
 #         """
 #         ...
-
+#
 #     def read(self) -> str:
 #         """
 #         Read data from the topic/queue
 #         """
 #         ...
-
-
+#
+#
 # def implements(proto: Type):
 #     """ Creates a decorator for classes that checks that the decorated class
 #     implements the runtime protocol `proto`
 #     """
-
 #     def _deco(cls_def):
 #         try:
 #             assert issubclass(cls_def, proto)
@@ -80,5 +79,4 @@ class BrokerConnector(ABC):
 #             e.args = (f"{cls_def} does not implement protocol {proto}",)
 #             raise
 #         return cls_def
-
 #     return _deco

@@ -7,7 +7,7 @@ from datetime import datetime
 import json
 import logging
 from mh.broker.services.message import Message, TIMESTAMP_FORMAT
-from pv_power import PV
+from mh.pv.pv_power import PV
 
 
 log = logging.getLogger()

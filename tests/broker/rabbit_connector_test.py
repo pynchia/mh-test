@@ -6,6 +6,7 @@ PLEASE NOTE: FOR DEMO PURPOSES ONLY. NOT ALL THE SCENARIOS ARE CATERED FOR
 
 # import pika
 # import pika.exceptions as exc
+import pytest
 from unittest.mock import MagicMock, patch
 from mh.broker.connectors.rabbit import Rabbit
 from mh.broker.connectors.api import PublishError

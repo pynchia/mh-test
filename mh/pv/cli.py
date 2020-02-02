@@ -4,7 +4,7 @@ The command line interface to the PV application
 
 import click
 import logging
-from main import main
+from mh.pv.main import main
 
 
 DEFAULT_QUEUE = 'meter'

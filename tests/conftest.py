@@ -6,7 +6,7 @@ import pytest
 @pytest.fixture(scope='session')
 def sample_msg_dict():
     return {
-        "timestamp": datetime.now().replace(microsecond=0),  # suppress ms
+        "timestamp": datetime(year=2020, month=2, day=1),
         "power": 4500
     }
 

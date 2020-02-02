@@ -4,7 +4,7 @@ The command line interface to the Meter application
 
 import click
 import logging
-from main import main
+from mh.meter.main import main
 
 
 DEFAULT_QUEUE = 'meter'

@@ -3,10 +3,10 @@ The main module of the PV application
 """
 
 from time import sleep
-from consumer import Processor
 from mh.broker.connectors.rabbit import Rabbit
 from mh.broker.services.broker import Broker
-from pv_power import PV
+from mh.pv.consumer import Processor
+from mh.pv.pv_power import PV
 
 
 def main(out_filename:str, url:str, queue:str):
