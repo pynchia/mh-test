@@ -1,8 +1,4 @@
-import logging
 from typing import Callable
-
-
-log = logging.getLogger()
 
 
 class Broker:

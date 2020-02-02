@@ -6,7 +6,7 @@ import logging
 from time import sleep
 from mh.broker.connectors.rabbit import Rabbit
 from mh.broker.services.broker import Broker
-from .generate import generate_msgs
+from generate import generate_msgs
 
 
 log = logging.getLogger()

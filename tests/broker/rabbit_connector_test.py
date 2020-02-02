@@ -4,15 +4,11 @@ Test the Rabbit connector
 PLEASE NOTE: FOR DEMO PURPOSES ONLY. NOT ALL THE SCENARIOS ARE CATERED FOR
 """
 
-import logging
 # import pika
 # import pika.exceptions as exc
 from unittest.mock import MagicMock, patch
 from mh.broker.connectors.rabbit import Rabbit
 from mh.broker.connectors.api import PublishError
-
-
-log = logging.getLogger()
 
 
 def test_connector_publish(sample_msg_str):

@@ -6,7 +6,6 @@ from .api import BrokerConnector, PublishError
 
 log = logging.getLogger()
 
-
 # the nicer/modern way would be
 # @implements(Broker)
 # class Rabbit:
