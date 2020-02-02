@@ -38,7 +38,7 @@ class Processor:
             log.error(e)
             out_str = e
         else:
-            pv_power = PV.measure_pv_power(message.timestamp)
+            pv_power = PV.measure_power(message.timestamp)
             total_power = pv_power + message.power
             out_str = f"{message.timestamp} meter={message.power} pv={pv_power}, total={total_power}\n"
 

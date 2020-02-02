@@ -32,7 +32,7 @@ class PV:
         log.info(f"Loaded PV day power file: {filename}")
 
     @classmethod
-    def measure_pv_power(cls, when: datetime):
+    def measure_power(cls, when: datetime):
         """
         Measure the power output of the PV at the specified datetime
         It assumes the PV output is the same each day
